@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="2dengine (3)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/2dengine.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

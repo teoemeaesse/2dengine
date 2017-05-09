@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="2dengine:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/2dengine_jar</output-path>
+    <root id="archive" name="2dengine.jar">
+      <element id="module-output" name="2dengine" />
+      <element id="library" level="project" name="2dengine" />
+    </root>
+  </artifact>
+</component>

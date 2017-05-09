@@ -13,7 +13,7 @@ public abstract class GameTimer extends Timer {
         this.fps = fps;
     }
 
-    private void start() {
+    public void start() {
         schedule(new TimerTask() {
             public void run() {
                 GameTimer.this.action();
@@ -23,8 +23,4 @@ public abstract class GameTimer extends Timer {
     }
 
     public abstract void action();
-
-    public void startTimer() {
-        this.start();
-    }
 }
