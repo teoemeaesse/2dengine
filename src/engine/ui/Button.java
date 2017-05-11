@@ -11,9 +11,10 @@ import java.util.Map;
  * Created by tomas on 5/8/2017.
  */
 public abstract class Button {
-    protected Rectangle rectangle, textBounds;
+    protected Sprite sprite;
+    private Rectangle textBounds;
     private String text;
-    protected Color backgroundColor, textColor;
+    private Color textColor;
     private java.awt.Font font;
     private int triggerButton;
     private boolean mouseOver = false;
@@ -22,18 +23,17 @@ public abstract class Button {
 
     private static Map<Integer, Button> instances = new HashMap<>();
 
-    public Button(Rectangle rectangle, int triggerButton, Color backgroundColor, Color textColor, Graphics g, java.awt.Font font, String text){
-        this.rectangle = rectangle;
+    public Button(Sprite sprite, int triggerButton, Color textColor, Graphics g, java.awt.Font font, String text){
+        this.sprite = sprite;
         this.triggerButton = triggerButton;
         this.text = text;
-        this.backgroundColor = backgroundColor;
         this.textColor = textColor;
         this.font = font;
-        textBounds = getStringBounds((Graphics2D) g, text, rectangle.x, rectangle.y);
+        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
     }
 
     public final void clicked(int button, int x, int y){
-        if(button == triggerButton && new Rectangle(x, y, 1, 1).intersects(rectangle))
+        if(button == triggerButton && new Rectangle(x, y, 1, 1).intersects(sprite.getCollisionBox()))
             onClick();
     }
     public abstract void onClick();
@@ -53,11 +53,10 @@ public abstract class Button {
     }
 
     private void render(Graphics g){
-        g.setColor(backgroundColor);
-        g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        sprite.draw(g, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
         g.setColor(textColor);
         g.setFont(font);
-        g.drawString(text, rectangle.x + rectangle.width / 2 - textBounds.width / 2, rectangle.y + rectangle.height / 2 + textBounds.height / 2);
+        g.drawString(text, sprite.getCollisionBox().x + sprite.getCollisionBox().width / 2 - textBounds.width / 2, sprite.getCollisionBox().y + sprite.getCollisionBox().height / 2 + textBounds.height / 2);
         onMouseOver(g);
     }
 
@@ -72,8 +71,8 @@ public abstract class Button {
         return instances;
     }
 
-    public Rectangle getRectangle() {
-        return rectangle;
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public boolean isMouseOver() {

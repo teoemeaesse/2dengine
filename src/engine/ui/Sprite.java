@@ -43,6 +43,11 @@ public class Sprite {
             for(BufferedImage bi : images)
                 g.drawImage(bi, x, y, null);
     }
+    public void highlight(Graphics g, int x, int y, int thickness, Color color){
+        g.setColor(color);
+        for(int i = 0; i < thickness; i++)
+            g.drawRect(x + i, y + i, collisionBox.width - i * 2 - 1, collisionBox.height - i * 2 - 1);
+    }
 
     public void updateCollisionBox(int newX, int newY) {
         this.collisionBox.setLocation(newX, newY);
