@@ -15,8 +15,6 @@ public class Main {
         GamePanel gf = new GamePanel("frame", 600, 400){
             @Override
             public void render(Graphics g) {
-                cls(g);
-                Button.renderButtons(g);
                 new Sprite(new Rectangle(50, 200, 150, 70), Color.RED).draw(g, 50, 200);
             }
 

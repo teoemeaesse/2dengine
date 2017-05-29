@@ -33,6 +33,8 @@ public abstract class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g){
+        cls(g);
+        engine.ui.Button.renderButtons(g);
         render(checkAntialiasing(g));
     }
 
