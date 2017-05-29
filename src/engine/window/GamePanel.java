@@ -9,24 +9,32 @@ import java.util.Map;
 /**
  * Created by tomas on 4/23/2017.
  */
-public abstract class GameFrame extends JFrame {
+public abstract class GamePanel extends JPanel {
     private boolean antialiasing;
+    private JFrame window;
 
-    public GameFrame(String title, int width, int height, boolean resizable, boolean antialiasing) {
-        super(title);
+    public GamePanel(String title, int width, int height) {
+        window = new JFrame(title);
 
-        this.antialiasing = antialiasing;
+        antialiasing = true;
 
-        this.setSize(width, height);
-        this.setResizable(resizable);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.addMouseListener(new MouseHandler());
-        this.setVisible(true);
-        this.setIgnoreRepaint(false);
+        window.add(this);
+
+        window.setSize(width, height);
+        window.setIgnoreRepaint(false);
+        window.setResizable(true);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new MouseHandler());
+        window.setVisible(true);
     }
 
     public abstract void render(Graphics g);
     public abstract void update();
+
+    @Override
+    public void paintComponent(Graphics g){
+        render(checkAntialiasing(g));
+    }
 
     public final void cls(Graphics g){
         g.clearRect(0, 0, getWidth(), getHeight());
@@ -50,10 +58,11 @@ public abstract class GameFrame extends JFrame {
         }
         return g;
     }
-
-    @Override
-    public void paint(Graphics g){
-        render(checkAntialiasing(g));
+    public final void setAntialiasing(boolean antialiasing){
+        this.antialiasing = antialiasing;
+    }
+    public final void setResizable(boolean resizable){
+        window.setResizable(resizable);
     }
 
     private class MouseHandler implements MouseListener {

@@ -11,12 +11,12 @@ import java.io.InputStream;
  */
 public class Sprite {
     private Rectangle collisionBox = new Rectangle(0, 0, 0, 0);
-    private BufferedImage[] images;
+    private BufferedImage image;
     private Color color;
 
-    public Sprite(Rectangle collisionBox, BufferedImage ... images) {
+    public Sprite(Rectangle collisionBox, BufferedImage image) {
         this.collisionBox = collisionBox;
-        this.images = images;
+        this.image = image;
     }
     public Sprite(Rectangle collisionBox, Color color) {
         this.collisionBox = collisionBox;
@@ -36,12 +36,11 @@ public class Sprite {
     }
 
     public void draw(Graphics g, int x, int y) {
-        if(this.images == null) {
-            g.setColor(this.color);
-            g.fillRect(x, y, this.collisionBox.width, this.collisionBox.height);
+        if(image == null) {
+            g.setColor(color);
+            g.fillRect(x, y, collisionBox.width, collisionBox.height);
         }else
-            for(BufferedImage bi : images)
-                g.drawImage(bi, x, y, null);
+            g.drawImage(image, x, y, null);
     }
     public void highlight(Graphics g, int x, int y, int thickness, Color color){
         g.setColor(color);
@@ -53,25 +52,25 @@ public class Sprite {
         this.collisionBox.setLocation(newX, newY);
     }
     public void incrementCollisionBox(int xIncrement, int yIncrement) {
-        this.collisionBox.setLocation(this.collisionBox.x + xIncrement, this.collisionBox.y + yIncrement);
+        this.collisionBox.setLocation(collisionBox.x + xIncrement, collisionBox.y + yIncrement);
     }
 
     public Rectangle getCollisionBox() {
-        return this.collisionBox;
+        return collisionBox;
     }
-    public BufferedImage[] getImage() {
-        return this.images;
+    public BufferedImage getImage() {
+        return image;
     }
     public Color getColor() {
-        return this.color;
+        return color;
     }
     public void setColor(Color color) {
         this.color = color;
     }
     public boolean isColliding(Sprite sprite) {
-        return this.collisionBox.intersects(sprite.getCollisionBox());
+        return collisionBox.intersects(sprite.getCollisionBox());
     }
     public boolean isColliding(Rectangle collisionBox) {
-        return this.collisionBox.intersects(collisionBox);
+        return collisionBox.intersects(collisionBox);
     }
 }

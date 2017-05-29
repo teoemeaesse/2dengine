@@ -3,7 +3,7 @@ package example;
 import engine.threads.GameTimer;
 import engine.ui.Button;
 import engine.ui.Sprite;
-import engine.window.GameFrame;
+import engine.window.GamePanel;
 
 import java.awt.*;
 
@@ -12,33 +12,35 @@ import java.awt.*;
  */
 public class Main {
     public static void main(String[] args){
-        GameFrame gf = new GameFrame("frame", 600, 400, true, true){
-            int x = 10;
+        GamePanel gf = new GamePanel("frame", 600, 400){
             @Override
             public void render(Graphics g) {
                 cls(g);
-                Button.renderAllButtons(getGraphics());
+                Button.renderButtons(g);
+                new Sprite(new Rectangle(50, 200, 150, 70), Color.RED).draw(g, 50, 200);
             }
 
             @Override
             public void update() {
-                x += 5;
                 checkMouseOver();
             }
         };
+        gf.setAntialiasing(true);
 
-        GameTimer gt = new GameTimer(60) {
+        GameTimer gt = new GameTimer(30) {
             int tick = 0;
+
             @Override
             public void action() {
-                gf.update();
                 gf.repaint();
+                gf.update();
                 tick++;
                 if(tick > 180)
                     Button.deleteButton(0);
             }
         };
-        engine.ui.Button.createButton(0, new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), Button.LMB, Color.BLACK, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button1") {
+
+        Button.createButton(new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), Color.BLACK, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12)) {
             @Override
             public void onClick() {
                 System.out.println("lmb pressed");
@@ -51,7 +53,7 @@ public class Main {
                 }
             }
         });
-        engine.ui.Button.createButton(1, new Button(new Sprite(new Rectangle(300, 50, 120, 20), Color.BLACK), Button.RMB, Color.WHITE, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button2") {
+        Button.createButton(new Button(new Sprite(new Rectangle(300, 50, 120, 20), Color.BLACK), Color.WHITE, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button2") {
             @Override
             public void onClick() {
                 System.out.println("rmb pressed");
@@ -64,6 +66,9 @@ public class Main {
                 }
             }
         });
+        Button.getInstance(0).setOutline(Color.BLUE, 2);
+        Button.getInstance(0).setText("button0", gf.getGraphics());
+        Button.getInstance(1).setTriggerButton(Button.RMB);
         gt.start();
     }
 }
