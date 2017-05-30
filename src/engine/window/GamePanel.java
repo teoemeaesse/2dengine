@@ -47,7 +47,7 @@ public abstract class GamePanel extends JPanel {
         if(mousePos != null){
             Rectangle mouse = new Rectangle(mousePos.x, mousePos.y, 1, 1);
             for(Map.Entry<Integer, engine.ui.Button> me : engine.ui.Button.getInstances().entrySet()){
-                if(mouse.intersects(me.getValue().getSprite().getCollisionBox()))
+                if(mouse.intersects(me.getValue().getSprite().getCollisionBox().getBounds()))
                     me.getValue().setMouseOver(true);
                 else
                     me.getValue().setMouseOver(false);
@@ -66,7 +66,6 @@ public abstract class GamePanel extends JPanel {
     public final void setResizable(boolean resizable){
         window.setResizable(resizable);
     }
-
     private class MouseHandler implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {

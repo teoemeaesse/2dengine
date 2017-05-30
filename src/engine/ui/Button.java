@@ -29,7 +29,7 @@ public abstract class Button {
         this.text = text;
         this.textColor = textColor;
         this.font = font;
-        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
+        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y);
     }
     public Button(Sprite sprite, Color textColor, Graphics g, java.awt.Font font){
         this.sprite = sprite;
@@ -37,7 +37,7 @@ public abstract class Button {
         this.text = "";
         this.textColor = textColor;
         this.font = font;
-        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
+        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y);
     }
 
     public Button(Sprite sprite) {
@@ -45,7 +45,7 @@ public abstract class Button {
     }
 
     public final void clicked(int button, int x, int y){
-        if(button == triggerButton && new Rectangle(x, y, 1, 1).intersects(sprite.getCollisionBox()))
+        if(button == triggerButton && new Rectangle(x, y, 1, 1).intersects(sprite.getCollisionBox().getBounds()))
             onClick();
     }
     public abstract void onClick();
@@ -70,13 +70,13 @@ public abstract class Button {
     }
 
     private void render(Graphics g){
-        sprite.draw(g, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
+        sprite.draw(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y);
         if(font != null){
             g.setColor(textColor);
             g.setFont(font);
-            g.drawString(text, sprite.getCollisionBox().x + sprite.getCollisionBox().width / 2 - textBounds.width / 2, sprite.getCollisionBox().y + sprite.getCollisionBox().height / 2 + textBounds.height / 2);
+            g.drawString(text, sprite.getCollisionBox().getBounds().x + sprite.getCollisionBox().getBounds().width / 2 - textBounds.width / 2, sprite.getCollisionBox().getBounds().y + sprite.getCollisionBox().getBounds().height / 2 + textBounds.height / 2);
             if (outlineThickness > 0) {
-                sprite.highlight(g, sprite.getCollisionBox().x, sprite.getCollisionBox().y, outlineThickness, outlineColor);
+                sprite.highlight(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y, outlineThickness, outlineColor);
             }
         }
         onMouseOver(g);
@@ -115,6 +115,6 @@ public abstract class Button {
 
     public void setText(String text, Graphics g) {
         this.text = text;
-        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().x, sprite.getCollisionBox().y);
+        textBounds = getStringBounds((Graphics2D) g, text, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y);
     }
 }

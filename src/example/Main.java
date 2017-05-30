@@ -47,7 +47,7 @@ public class Main {
             @Override
             public void onMouseOver(Graphics g) {
                 if(isMouseOver()){
-                    sprite.highlight(g, sprite.getCollisionBox().x, sprite.getCollisionBox().y, 5, Color.BLUE);
+                    sprite.highlight(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y, 5, Color.BLUE);
                 }
             }
         });
@@ -60,7 +60,7 @@ public class Main {
             @Override
             public void onMouseOver(Graphics g) {
                 if(isMouseOver()){
-                    sprite.highlight(g, sprite.getCollisionBox().x, sprite.getCollisionBox().y, 3, Color.BLUE);
+                    sprite.highlight(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y, 3, Color.BLUE);
                 }
             }
         });
