@@ -1,10 +1,15 @@
 package engine.window;
 
+import engine.ui.Clickable;
+import engine.ui.Draggable;
+import engine.ui.Highlightable;
+import engine.ui.UIElement;
+import javafx.stage.Screen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Map;
 
 /**
  * Created by tomas on 4/23/2017.
@@ -25,7 +30,6 @@ public abstract class GamePanel extends JPanel {
         window.setResizable(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         addMouseListener(new MouseHandler());
-        window.setVisible(true);
     }
 
     public abstract void render(Graphics g);
@@ -34,7 +38,6 @@ public abstract class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         cls(g);
-        engine.ui.Button.renderButtons(g);
         render(checkAntialiasing(g));
     }
 
@@ -42,17 +45,35 @@ public abstract class GamePanel extends JPanel {
         g.clearRect(0, 0, getWidth(), getHeight());
     }
 
-    public final void checkMouseOver(){
+    public final void mouseUpdate(){
+        checkMouseDragging();
+        checkMouseOver();
+    }
+
+    public final void display(){
+        getWindow().setVisible(true);
+    }
+
+    private void checkMouseOver(){
         Point mousePos = getMousePosition();
         if(mousePos != null){
             Rectangle mouse = new Rectangle(mousePos.x, mousePos.y, 1, 1);
-            for(Map.Entry<Integer, engine.ui.Button> me : engine.ui.Button.getInstances().entrySet()){
-                if(mouse.intersects(me.getValue().getSprite().getCollisionBox().getBounds()))
-                    me.getValue().setMouseOver(true);
-                else
-                    me.getValue().setMouseOver(false);
+            for(UIElement uie : UIElement.getInstances()){
+                if(uie instanceof Highlightable){
+                    if (mouse.intersects(uie.getSprite().getCollisionBox().getBounds()))
+                        ((Highlightable) uie).setMouseOver(true);
+                    else
+                        ((Highlightable) uie).setMouseOver(false);
+                }
             }
         }
+    }
+    private void checkMouseDragging(){
+        for(UIElement uie : UIElement.getInstances())
+            if(uie instanceof Draggable)
+                if(((Draggable) uie).getDragMode() != UIElement.DRAG_NONE)
+                    if(getMousePosition() != null)
+                        ((Draggable) uie).drag(getMousePosition().x, getMousePosition().y);
     }
     private Graphics checkAntialiasing(Graphics g){
         if(this.antialiasing){
@@ -60,12 +81,22 @@ public abstract class GamePanel extends JPanel {
         }
         return g;
     }
+
+    public JFrame getWindow() {
+        return window;
+    }
+
     public final void setAntialiasing(boolean antialiasing){
         this.antialiasing = antialiasing;
     }
     public final void setResizable(boolean resizable){
         window.setResizable(resizable);
     }
+    public final void center(){
+        window.setLocationRelativeTo(null);
+    }
+
+
     private class MouseHandler implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -84,13 +115,21 @@ public abstract class GamePanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            for(Map.Entry<Integer, engine.ui.Button> me : engine.ui.Button.getInstances().entrySet())
-                me.getValue().clicked(e.getButton(), e.getX(), e.getY());
+            for(UIElement uie : UIElement.getInstances()){
+                if(uie instanceof Clickable){
+                    ((Clickable) uie).clicked(e.getButton(), e.getX(), e.getY());
+                }
+            }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
+            for(UIElement uie : UIElement.getInstances()){
+                if(uie instanceof Draggable){
+                    if(((Draggable) uie).getDragMode() == UIElement.DRAG_CLICK_HOLD_RELEASE)
+                        ((Draggable) uie).setDragging(false);
+                }
+            }
         }
     }
 }

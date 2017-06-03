@@ -2,7 +2,9 @@ package example;
 
 import engine.threads.GameTimer;
 import engine.ui.Button;
+import engine.ui.Clickable;
 import engine.ui.Sprite;
+import engine.ui.UIElement;
 import engine.window.GamePanel;
 
 import java.awt.*;
@@ -12,33 +14,35 @@ import java.awt.*;
  */
 public class Main {
     public static void main(String[] args){
-        GamePanel gf = new GamePanel("frame", 600, 400){
+        GamePanel gp = new GamePanel("frame", 600, 400){
             @Override
             public void render(Graphics g) {
+                UIElement.renderUIElements(g);
                 new Sprite(new Rectangle(50, 200, 150, 70), Color.RED).draw(g, 50, 200);
             }
 
             @Override
             public void update() {
-                checkMouseOver();
+                mouseUpdate();
             }
         };
-        gf.setAntialiasing(true);
+        gp.setAntialiasing(true);
+        gp.display();
 
-        GameTimer gt = new GameTimer(30) {
+        GameTimer gt = new GameTimer(60) {
             int tick = 0;
 
             @Override
             public void action() {
-                gf.repaint();
-                gf.update();
+                gp.repaint();
+                gp.update();
                 tick++;
                 if(tick > 180)
-                    Button.deleteButton(0);
+                    UIElement.removeInstance(0);
             }
         };
 
-        Button.createButton(new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), Color.BLACK, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12)) {
+        new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), Color.BLACK, gp.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button1", 0) {
             @Override
             public void onClick() {
                 System.out.println("lmb pressed");
@@ -47,11 +51,11 @@ public class Main {
             @Override
             public void onMouseOver(Graphics g) {
                 if(isMouseOver()){
-                    sprite.highlight(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y, 5, Color.BLUE);
+                    getSprite().highlight(g, getSprite().getX(), getSprite().getY(), 5, Color.BLUE);
                 }
             }
-        });
-        Button.createButton(new Button(new Sprite(new Rectangle(300, 50, 120, 20), Color.BLACK), Color.WHITE, gf.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button2") {
+        };
+        new Button(new Sprite(new Rectangle(300, 50, 120, 20), Color.BLACK), Color.WHITE, gp.getGraphics(), new Font("Dialog", Font.PLAIN, 12), "button2"){
             @Override
             public void onClick() {
                 System.out.println("rmb pressed");
@@ -60,13 +64,17 @@ public class Main {
             @Override
             public void onMouseOver(Graphics g) {
                 if(isMouseOver()){
-                    sprite.highlight(g, sprite.getCollisionBox().getBounds().x, sprite.getCollisionBox().getBounds().y, 3, Color.BLUE);
+                    getSprite().highlight(g, getSprite().getX(), getSprite().getY(), 3, Color.BLUE);
                 }
             }
-        });
-        Button.getInstance(0).setOutline(Color.BLUE, 2);
-        Button.getInstance(0).setText("button0", gf.getGraphics());
-        Button.getInstance(1).setTriggerButton(Button.RMB);
+        };
+
+        ((Button) UIElement.getInstance(1)).setDragMode(UIElement.DRAG_CLICK_CLICK);
+        ((Button) UIElement.getInstance(1)).setDragOffset(UIElement.DRAG_OFFSET_MOUSE);
+        ((Button) UIElement.getInstance(0)).setDragMode(UIElement.DRAG_CLICK_HOLD_RELEASE);
+        ((Button) UIElement.getInstance(0)).setDragOffset(UIElement.DRAG_OFFSET_MIDDLE);
+        ((Button) UIElement.getInstance(0)).setOutline(Color.BLUE, 2);
+        ((Clickable) UIElement.getInstance(1)).setTriggerButton(Button.RMB);
         gt.start();
     }
 }
