@@ -60,7 +60,7 @@ public abstract class GamePanel extends JPanel {
             Rectangle mouse = new Rectangle(mousePos.x, mousePos.y, 1, 1);
             for(UIElement uie : UIElement.getInstances()){
                 if(uie instanceof Highlightable){
-                    if (mouse.intersects(uie.getSprite().getCollisionBox().getBounds()))
+                    if(mouse.intersects(uie.getSprite().getCollisionBox().getBounds()))
                         ((Highlightable) uie).setMouseOver(true);
                     else
                         ((Highlightable) uie).setMouseOver(false);

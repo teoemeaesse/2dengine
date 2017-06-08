@@ -35,6 +35,10 @@ public class Sprite {
 
         return bufferedImage;
     }
+    public static Sprite loadSpriteFromFile(int x, int y, InputStream is){
+        BufferedImage image = loadImageFromFile(is);
+        return new Sprite(new Rectangle(x, y, image.getWidth(), image.getHeight()), image);
+    }
 
     public void draw(Graphics g, int x, int y) {
         if(image == null) {
