@@ -1,6 +1,7 @@
 package engine.ui;
 
 import com.sun.istack.internal.Nullable;
+import engine.window.Window;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by tomas on 6/1/2017.
  */
-public abstract class UIElement {
+public abstract class UIElement implements Renderable {
     public static final int LMB = MouseEvent.BUTTON1, RMB = MouseEvent.BUTTON3, MMB = MouseEvent.BUTTON2,
             DRAG_NONE = 0, DRAG_CLICK_HOLD_RELEASE = 1, DRAG_CLICK_CLICK = 2,
             OFFSET_TOP_LEFT = 0, OFFSET_TOP_RIGHT = 1, OFFSET_BOTTOM_LEFT = 2, OFFSET_BOTTOM_RIGHT = 3, OFFSET_MIDDLE = 4, OFFSET_MOUSE = 5, OFFSET_TOP_MIDDLE = 6, OFFSET_LEFT_MIDDLE = 7, OFFSET_BOTTOM_MIDDLE = 8, OFFSET_RIGHT_MIDDLE = 9;
@@ -20,17 +21,17 @@ public abstract class UIElement {
 
     private static ArrayList<UIElement> instances = new ArrayList<>();
 
-    public UIElement(@Nullable Sprite sprite, String id) {
+    public UIElement(Sprite sprite, String id) {
         this.sprite = sprite;
         this.id = id;
         instances.add(this);
     }
 
 
-    public static void renderUIElements(Graphics g){
+    public static void queueUIElements(Window window){
         for(UIElement uie : instances)
             if(uie.autoRender)
-                uie.render(g);
+                window.queueRenderable(uie);
     }
 
     public final void render(Graphics g){

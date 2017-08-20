@@ -3,7 +3,7 @@ package example;
 import engine.threads.GameTimer;
 import engine.ui.*;
 import engine.ui.Button;
-import engine.window.GamePanel;
+import engine.window.Window;
 
 import java.awt.*;
 import java.awt.Font;
@@ -13,29 +13,24 @@ import java.awt.Font;
  */
 public class Main {
     public static void main(String[] args){
-        GamePanel gp = new GamePanel("frame", 600, 400){
-            @Override
-            public void render(Graphics g) {
-                UIElement.renderUIElements(g);
-                new Sprite(new Rectangle(50, 200, 150, 70), Color.RED).draw(g, 50, 200);
-            }
-
+        Window w = new Window("frame", 600, 400){
             @Override
             public void update() {
                 mouseUpdate();
             }
         };
-        gp.setAntialiasing(true);
-        gp.display();
-        gp.center();
+        w.setAntialiasing(true);
+        w.display();
+        w.center();
 
         GameTimer gt = new GameTimer(60) {
             int tick = 0;
 
             @Override
             public void action() {
-                gp.repaint();
-                gp.update();
+                w.update();
+                UIElement.queueUIElements(w);
+                w.clearRenderableQueue();
                 tick++;
                 if(tick > 180)
                     UIElement.removeInstance("button1");
