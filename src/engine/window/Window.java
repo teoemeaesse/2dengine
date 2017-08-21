@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +31,7 @@ public abstract class Window extends JFrame {
     }
 
     public final void clearRenderableQueue(){
+        UIElement.queueUIElements(this);
         repaint();
     }
     public abstract void update();
@@ -39,24 +42,27 @@ public abstract class Window extends JFrame {
     }
 
     private void checkMouseOver(){
-        if(display.getMousePosition() != null){
-            Rectangle mouse = new Rectangle(display.getMousePosition().x, display.getMousePosition().y, 1, 1);
-            for(UIElement uie : UIElement.getInstances()){
-                if(uie instanceof Highlightable){
+        Point mousePosition = display.getMousePosition();
+        if(mousePosition != null){
+            Rectangle mouse = new Rectangle(mousePosition.x, mousePosition.y, 1, 1);
+            for(UIElement uie : UIElement.getInstances())
+                if(uie instanceof Highlightable)
                     if(mouse.intersects(uie.getSprite().getCollisionBox().getBounds()))
                         ((Highlightable) uie).setMouseOver(true);
                     else
                         ((Highlightable) uie).setMouseOver(false);
-                }
-            }
         }
     }
     private void checkMouseDragging(){
-        for(UIElement uie : UIElement.getInstances())
-            if(uie instanceof Draggable)
-                if(((Draggable) uie).getDragMode() != UIElement.DRAG_NONE)
-                    if(display.getMousePosition() != null)
-                        ((Draggable) uie).drag(display.getMousePosition().x, display.getMousePosition().y);
+        for(UIElement uie : UIElement.getInstances()){
+            if(uie instanceof Draggable){
+                if(((Draggable) uie).getDragMode() != UIElement.DRAG_NONE){
+                    Point mousePosition = display.getMousePosition();
+                    if(mousePosition != null)
+                        ((Draggable) uie).drag(mousePosition.x, mousePosition.y);
+                }
+            }
+        }
     }
     private Graphics checkAntialiasing(Graphics g){
         if(this.antialiasing){

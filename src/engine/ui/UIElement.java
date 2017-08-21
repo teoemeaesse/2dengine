@@ -17,7 +17,6 @@ public abstract class UIElement implements Renderable {
 
     private Sprite sprite;
     private String id;
-    private boolean autoRender = true;
 
     private static ArrayList<UIElement> instances = new ArrayList<>();
 
@@ -26,12 +25,16 @@ public abstract class UIElement implements Renderable {
         this.id = id;
         instances.add(this);
     }
+    public UIElement(Sprite sprite){
+        this.sprite = sprite;
+        this.id = "";
+        instances.add(this);
+    }
 
 
     public static void queueUIElements(Window window){
         for(UIElement uie : instances)
-            if(uie.autoRender)
-                window.queueRenderable(uie);
+            window.queueRenderable(uie);
     }
 
     public final void render(Graphics g){
@@ -42,26 +45,21 @@ public abstract class UIElement implements Renderable {
 
     public abstract void additionalRender(Graphics g);
 
-    public static void removeInstance(String id){
-        for(int i = 0; i < instances.size(); i++){
-            if(instances.get(i).getId().equals(id)){
+    public static void removeInstances(String id){
+        for(int i = 0; i < instances.size(); i++)
+            if(instances.get(i).getId().equals(id))
                 instances.remove(i);
-                break;
-            }
-        }
     }
-    public static UIElement getInstance(String id){
-        UIElement instance = null;
+    public static ArrayList<UIElement> getInstances(String id){
+        ArrayList<UIElement> instances = new ArrayList<>();
 
-        for(int i = 0; i < instances.size(); i++){
-            if(instances.get(i).getId().equals(id)){
-                instance = instances.get(i);
-                break;
-            }
-        }
+        for(int i = 0; i < UIElement.instances.size(); i++)
+            if(UIElement.instances.get(i).getId().equals(id))
+                instances.add(UIElement.instances.get(i));
 
-        return instance;
+        return instances;
     }
+
 
     public Sprite getSprite() {
         return sprite;
@@ -74,8 +72,5 @@ public abstract class UIElement implements Renderable {
     }
     public static ArrayList<UIElement> getInstances() {
         return instances;
-    }
-    public void setAutoRender(boolean autoRender) {
-        this.autoRender = autoRender;
     }
 }
