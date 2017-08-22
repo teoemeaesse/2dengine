@@ -13,6 +13,7 @@ public class Sprite {
     private Rectangle collisionBox = new Rectangle(0, 0, 0, 0);
     private BufferedImage image;
     private Color color;
+    private float alpha = 1;
 
     public Sprite(Rectangle collisionBox, BufferedImage image) {
         this.collisionBox = collisionBox;
@@ -40,14 +41,20 @@ public class Sprite {
         return new Sprite(new Rectangle(x, y, image.getWidth(), image.getHeight()), image);
     }
 
-    public void draw(Graphics g, int x, int y) {
+    public void draw(Graphics2D g, int x, int y) {
+        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+        if(alpha < 1)
+            g.setComposite(alphaComposite);
         if(image == null) {
             g.setColor(color);
             g.fillRect(x, y, getWidth(), getHeight());
         }else
             g.drawImage(image, x, y, null);
     }
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
+        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+        if(alpha < 1)
+            g.setComposite(alphaComposite);
         if(image == null) {
             g.setColor(color);
             g.fillRect(getX(), getY(), getWidth(), getHeight());
@@ -68,6 +75,9 @@ public class Sprite {
         collisionBox.setLocation(getX() + xIncrement, getY() + yIncrement);
     }
 
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
     public Rectangle getCollisionBox() {
         return collisionBox;
     }

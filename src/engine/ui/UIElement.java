@@ -23,11 +23,13 @@ public abstract class UIElement implements Renderable {
     public UIElement(Sprite sprite, String id) {
         this.sprite = sprite;
         this.id = id;
+        init();
         instances.add(this);
     }
     public UIElement(Sprite sprite){
         this.sprite = sprite;
         this.id = "";
+        init();
         instances.add(this);
     }
 
@@ -38,11 +40,14 @@ public abstract class UIElement implements Renderable {
     }
 
     public final void render(Graphics g){
-        if(sprite != null)
-            sprite.draw(g);
+        if(sprite != null){
+            Graphics2D g2d = (Graphics2D) g;
+            sprite.draw(g2d);
+        }
         additionalRender(g);
     }
 
+    public abstract void init();
     public abstract void additionalRender(Graphics g);
 
     public static void removeInstances(String id){

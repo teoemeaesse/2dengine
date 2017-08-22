@@ -47,6 +47,8 @@ public class TextBox extends UIElement {
         setText(text);
     }
 
+    @Override public void init(){ }
+
     @Override
     public void additionalRender(Graphics g) {
         g.setColor(textColor);
