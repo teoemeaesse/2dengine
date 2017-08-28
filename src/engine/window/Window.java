@@ -1,5 +1,6 @@
 package engine.window;
 
+import engine.gfx.Layer;
 import engine.ui.*;
 import javafx.stage.Screen;
 
@@ -17,11 +18,10 @@ import java.util.ArrayList;
 public abstract class Window extends JFrame {
     private boolean antialiasing = true;
     private Display display = new Display();
-    private ArrayList<Renderable> renderQueue = new ArrayList<>();
+    private ArrayList<Layer> layers = new ArrayList<>();
 
     public Window(String title, int width, int height) {
         super(title);
-
         display.addMouseListener(new MouseHandler());
         add(display);
         setSize(width, height);
@@ -70,6 +70,7 @@ public abstract class Window extends JFrame {
         }
         return g;
     }
+
     public final void display(){
         setVisible(true);
     }
@@ -79,8 +80,11 @@ public abstract class Window extends JFrame {
     public final void center(){
         setLocationRelativeTo(null);
     }
-    public final void queueRenderable(Renderable renderable){
-        renderQueue.add(renderable);
+    public final void queueRenderable(Renderable renderable, int layer){
+        if(layers.size() <= layer)
+            for(int i = 0; i <= layer; i++)
+                layers.add(new Layer());
+        layers.get(layer).addToQueue(renderable);
     }
 
     private class Display extends JPanel{
@@ -88,9 +92,10 @@ public abstract class Window extends JFrame {
         public void paintComponent(Graphics g){
             cls(g);
             g = checkAntialiasing(g);
-            for(Renderable r : renderQueue)
-                r.render(g);
-            renderQueue = new ArrayList<>();
+            for(Layer l : layers){
+                l.render(g);
+                l.clearQueue();
+            }
         }
 
         private void cls(Graphics g){

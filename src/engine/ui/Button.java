@@ -1,6 +1,7 @@
 package engine.ui;
 
 import com.sun.istack.internal.Nullable;
+import engine.gfx.Sprite;
 
 import java.awt.*;
 
@@ -11,12 +12,16 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
     private Color outlineColor;
     private int triggerButton = LMB, dragButton = LMB, dragMode = DRAG_NONE, dragOffset = OFFSET_TOP_LEFT,
                 outlineThickness = 0,
-                xOffset = 0, yOffset = 0;
+                mouseHorizontalOffset = 0, mouseVerticalOffset = 0;
     private boolean mouseOver = false, dragging = false;
     private TextBox[] textBoxes;
 
     public Button(Sprite sprite, String id, TextBox ... textBoxes){
         super(sprite, id);
+        this.textBoxes = textBoxes;
+    }
+    public Button(Sprite sprite, TextBox ... textBoxes){
+        super(sprite);
         this.textBoxes = textBoxes;
     }
 
@@ -31,8 +36,8 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
             if(!dragging && new Rectangle(x, y, 1, 1).intersects(getSprite().getCollisionBox().getBounds())) {
                 setDragging(true);
                 if(dragOffset == OFFSET_MOUSE){
-                    xOffset = x - getSprite().getX();
-                    yOffset = y - getSprite().getY();
+                    mouseHorizontalOffset = x - getSprite().getX();
+                    mouseVerticalOffset = y - getSprite().getY();
                 }
             }
             else if(dragMode == DRAG_CLICK_CLICK) {
@@ -72,7 +77,7 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
             else if(dragOffset == OFFSET_MIDDLE)
                 getSprite().updateCollisionBox(mouseX - getSprite().getWidth() / 2, mouseY - getSprite().getHeight() / 2);
             else if(dragOffset == OFFSET_MOUSE)
-                getSprite().updateCollisionBox(mouseX - xOffset, mouseY - yOffset);
+                getSprite().updateCollisionBox(mouseX - mouseHorizontalOffset, mouseY - mouseVerticalOffset);
         }
     }
 

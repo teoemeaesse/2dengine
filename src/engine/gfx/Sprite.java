@@ -1,4 +1,4 @@
-package engine.ui;
+package engine.gfx;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

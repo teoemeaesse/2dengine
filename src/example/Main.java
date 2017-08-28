@@ -1,5 +1,6 @@
 package example;
 
+import engine.gfx.Sprite;
 import engine.threads.Timer;
 import engine.ui.*;
 import engine.ui.Button;
@@ -83,6 +84,7 @@ public class Main {
                     }
                 }
             };
+
 
         ((Button) UIElement.getInstances("button1").get(0)).setDragMode(UIElement.DRAG_CLICK_HOLD_RELEASE);
         ((Button) UIElement.getInstances("button1").get(0)).setDragOffset(UIElement.OFFSET_MIDDLE);

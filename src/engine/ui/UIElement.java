@@ -1,6 +1,6 @@
 package engine.ui;
 
-import com.sun.istack.internal.Nullable;
+import engine.gfx.Sprite;
 import engine.window.Window;
 
 import java.awt.*;
@@ -17,6 +17,7 @@ public abstract class UIElement implements Renderable {
 
     private Sprite sprite;
     private String id;
+    private int layer = 0;
 
     private static ArrayList<UIElement> instances = new ArrayList<>();
 
@@ -36,7 +37,7 @@ public abstract class UIElement implements Renderable {
 
     public static void queueUIElements(Window window){
         for(UIElement uie : instances)
-            window.queueRenderable(uie);
+            window.queueRenderable(uie, uie.getLayer());
     }
 
     public final void render(Graphics g){
@@ -66,15 +67,22 @@ public abstract class UIElement implements Renderable {
     }
 
 
-    public Sprite getSprite() {
+    public final Sprite getSprite() {
         return sprite;
     }
-    public void setSprite(Sprite sprite) {
+    public final void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
-    public String getId() {
+    public final int getLayer() {
+        return layer;
+    }
+    public final void setLayer(int layer) {
+        this.layer = layer;
+    }
+    public final String getId() {
         return id;
     }
+
     public static ArrayList<UIElement> getInstances() {
         return instances;
     }

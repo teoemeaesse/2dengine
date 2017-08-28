@@ -1,5 +1,7 @@
 package engine.ui;
 
+import engine.gfx.Sprite;
+
 import java.awt.*;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;

@@ -1,4 +1,4 @@
-package engine.ui;
+package engine.gfx;
 
 import java.awt.*;
 import java.io.IOException;
