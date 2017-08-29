@@ -83,7 +83,7 @@ public abstract class UIElement implements Renderable {
         return id;
     }
 
-    public static ArrayList<UIElement> getInstances() {
+    public static final ArrayList<UIElement> getInstances() {
         return instances;
     }
 }

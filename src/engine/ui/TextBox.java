@@ -82,10 +82,10 @@ public class TextBox extends UIElement {
         width = dimensions.width;
         height = dimensions.height;
     }
-    public final void setX(int x) {
+    public void setX(int x) {
         this.x = x;
     }
-    public final void setY(int y) {
+    public void setY(int y) {
         this.y = y;
     }
     public int getWidth() {
@@ -94,16 +94,16 @@ public class TextBox extends UIElement {
     public int getHeight() {
         return height;
     }
-    public final void setOffset(int offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
-    public final int getOffset() {
+    public int getOffset() {
         return offset;
     }
-    public final int getHorizontalPadding() {
+    public int getHorizontalPadding() {
         return horizontalPadding;
     }
-    public final int getVerticalPadding() {
+    public int getVerticalPadding() {
         return verticalPadding;
     }
 }
