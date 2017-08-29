@@ -37,10 +37,11 @@ public class Main {
             }
         };
 
-        TextBox tb1 = new TextBox(Color.WHITE, new Font("Helvetica", Font.PLAIN, 12), "but", 8, 2),
-                tb2 = new TextBox(Color.WHITE, new Font("Helvetica", Font.PLAIN, 12), "ton1");
+        TextBox tb1 = new TextBox("but", 8, 2),
+                tb2 = new TextBox("ton1");
         tb1.setOffset(UIElement.OFFSET_BOTTOM_LEFT);
         tb2.setOffset(UIElement.OFFSET_BOTTOM_RIGHT);
+        tb1.setTextColor(Color.YELLOW);
         tb1.setTextColor(Color.GREEN);
 
         new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), "button1", tb1, tb2) {
@@ -64,7 +65,7 @@ public class Main {
             }
         };
         for(int i = 0; i < 10; i++)
-            new Button(new Sprite(new Rectangle(300 + i * 10, 50 + i * 10, 120, 20), Color.BLACK), "button2", new TextBox(Color.WHITE, new Font("Helvetica", Font.PLAIN, 20), "button2", "button2txt")){
+            new Button(new Sprite(new Rectangle(300 + i * 10, 50 + i * 10, 120, 20), Color.BLACK), "button2", new TextBox("button2", "button2txt")){
                 @Override
                 public void init() {
                     Sprite sprite = getSprite();

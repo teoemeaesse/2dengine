@@ -1,7 +1,5 @@
 package engine.ui;
 
-import engine.gfx.Sprite;
-
 import java.awt.*;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
@@ -15,70 +13,47 @@ public class TextBox extends UIElement {
     private Color textColor;
     private Font font;
     private String text;
-    private Dimension textDimensions;
-    private Sprite parentSprite;
     private int offset = OFFSET_MIDDLE,
-            horizontalPadding = 0, verticalPadding = 0;
+            horizontalPadding = 0, verticalPadding = 0,
+            x, y, width, height;
 
-    public TextBox(Color textColor, Font font, String text, String id){
+    public TextBox(String text, String id){
         super(null, id);
-        this.textColor = textColor;
-        this.font = font;
+        this.textColor = Color.BLACK;
+        this.font = new Font("Helvetica", Font.PLAIN, 12);
         setText(text);
     }
-    public TextBox(Color textColor, Font font, String text, String id, int horizontalPadding, int verticalPadding){
+    public TextBox(String text, String id, int horizontalPadding, int verticalPadding){
         super(null, id);
-        this.textColor = textColor;
-        this.font = font;
+        this.textColor = Color.BLACK;
+        this.font = new Font("Helvetica", Font.PLAIN, 12);
         this.horizontalPadding = horizontalPadding;
         this.verticalPadding = verticalPadding;
         setText(text);
     }
-    public TextBox(Color textColor, Font font, String text){
+    public TextBox(String text){
         super(null);
-        this.textColor = textColor;
-        this.font = font;
+        this.textColor = Color.BLACK;
+        this.font = new Font("Helvetica", Font.PLAIN, 12);
         setText(text);
     }
-    public TextBox(Color textColor, Font font, String text, int horizontalPadding, int verticalPadding){
+    public TextBox(String text, int horizontalPadding, int verticalPadding){
         super(null);
-        this.textColor = textColor;
-        this.font = font;
+        this.textColor = Color.BLACK;
+        this.font = new Font("Helvetica", Font.PLAIN, 12);
         this.horizontalPadding = horizontalPadding;
         this.verticalPadding = verticalPadding;
         setText(text);
     }
 
-    @Override public void init(){ }
+    @Override public void init(){
+    }
 
     @Override
     public void additionalRender(Graphics g) {
         g.setColor(textColor);
         g.setFont(font);
-        if(parentSprite != null){
-            if(offset == OFFSET_TOP_LEFT)
-                g.drawString(text, parentSprite.getX() + horizontalPadding, parentSprite.getY() + textDimensions.height + 1 + verticalPadding);
-            else if(offset == OFFSET_TOP_RIGHT)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() - textDimensions.width - 2 - horizontalPadding, parentSprite.getY() + textDimensions.height + 1 + verticalPadding);
-            else if(offset == OFFSET_BOTTOM_LEFT)
-                g.drawString(text, parentSprite.getX() + horizontalPadding, parentSprite.getY() + parentSprite.getHeight() - 1 - verticalPadding);
-            else if(offset == OFFSET_BOTTOM_RIGHT)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() - textDimensions.width - 2 - horizontalPadding, parentSprite.getY() + parentSprite.getHeight() - 1 - verticalPadding);
-            else if(offset == OFFSET_MIDDLE)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() / 2 - textDimensions.width / 2, parentSprite.getY() + textDimensions.height + parentSprite.getHeight() / 2 - textDimensions.height / 2);
-            else if(offset == OFFSET_TOP_MIDDLE)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() / 2 - textDimensions.width / 2, parentSprite.getY() + textDimensions.height + verticalPadding);
-            else if(offset == OFFSET_LEFT_MIDDLE)
-                g.drawString(text, parentSprite.getX() + horizontalPadding, parentSprite.getY() + textDimensions.height + parentSprite.getHeight() / 2 - textDimensions.height / 2);
-            else if(offset == OFFSET_BOTTOM_MIDDLE)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() / 2 - textDimensions.width / 2, parentSprite.getY() + parentSprite.getHeight() - verticalPadding);
-            else if(offset == OFFSET_RIGHT_MIDDLE)
-                g.drawString(text, parentSprite.getX() + parentSprite.getWidth() - textDimensions.width - horizontalPadding, parentSprite.getY() + textDimensions.height + parentSprite.getHeight() / 2 - textDimensions.height / 2);
-        }
-    }
-
-    public void updateParentSprite(Sprite sprite){
-        this.parentSprite = sprite;
+        g.drawString(text, x, y);
     }
 
 
@@ -95,17 +70,40 @@ public class TextBox extends UIElement {
         return dimension;
     }
 
-    public void setTextColor(Color textColor) {
+    public final void setTextColor(Color textColor) {
         this.textColor = textColor;
     }
-    public void setFont(Font font) {
+    public final void setFont(Font font) {
         this.font = font;
     }
-    public void setText(String text) {
+    public final void setText(String text) {
         this.text = text;
-        textDimensions = getStringDimensions(text, font);
+        Dimension dimensions = getStringDimensions(text, font);
+        width = dimensions.width;
+        height = dimensions.height;
     }
-    public void setOffset(int offset) {
+    public final void setX(int x) {
+        this.x = x;
+    }
+    public final void setY(int y) {
+        this.y = y;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public final void setOffset(int offset) {
         this.offset = offset;
+    }
+    public final int getOffset() {
+        return offset;
+    }
+    public final int getHorizontalPadding() {
+        return horizontalPadding;
+    }
+    public final int getVerticalPadding() {
+        return verticalPadding;
     }
 }

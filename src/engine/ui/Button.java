@@ -52,8 +52,44 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
 
     @Override
     public final void additionalRender(Graphics g){
-        for(TextBox tb : textBoxes) {
-            tb.updateParentSprite(getSprite());
+        for(TextBox tb : textBoxes){
+            if(tb.getOffset() == OFFSET_TOP_LEFT){
+                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + tb.getHeight() + 1 + tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_TOP_RIGHT){
+                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - 2 - tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + tb.getHeight() + 1 + tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_BOTTOM_LEFT){
+                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_BOTTOM_RIGHT){
+                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - 2 - tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_MIDDLE){
+                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
+                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
+            }
+            else if(tb.getOffset() == OFFSET_TOP_MIDDLE){
+                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
+                tb.setY(getSprite().getY() + tb.getHeight() + tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_LEFT_MIDDLE){
+                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
+            }
+            else if(tb.getOffset() == OFFSET_BOTTOM_MIDDLE){
+                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
+                tb.setY(getSprite().getY() + getSprite().getHeight() - tb.getVerticalPadding());
+            }
+            else if(tb.getOffset() == OFFSET_RIGHT_MIDDLE){
+                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - tb.getHorizontalPadding());
+                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
+            }
+
             tb.render(g);
         }
 
