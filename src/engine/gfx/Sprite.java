@@ -14,6 +14,7 @@ public class Sprite {
     private BufferedImage image;
     private Color color;
     private float alpha = 1;
+    private boolean visible = true;
 
     public Sprite(Rectangle collisionBox, BufferedImage image) {
         this.collisionBox = collisionBox;
@@ -41,38 +42,35 @@ public class Sprite {
         return new Sprite(new Rectangle(x, y, image.getWidth(), image.getHeight()), image);
     }
 
-    public void draw(Graphics2D g, int x, int y) {
-        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-        if(alpha < 1)
-            g.setComposite(alphaComposite);
-        if(image == null) {
-            g.setColor(color);
-            g.fillRect(x, y, getWidth(), getHeight());
-        }else
-            g.drawImage(image, x, y, null);
-    }
     public void draw(Graphics2D g) {
-        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-        if(alpha < 1)
-            g.setComposite(alphaComposite);
-        if(image == null) {
-            g.setColor(color);
-            g.fillRect(getX(), getY(), getWidth(), getHeight());
-        }else
-            g.drawImage(image, getX(), getY(), null);
+        if(visible){
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            if(alpha < 1)
+                g.setComposite(alphaComposite);
+            if(image == null) {
+                g.setColor(color);
+                g.fillRect(getX(), getY(), getWidth(), getHeight());
+            }else
+                g.drawImage(image, getX(), getY(), null);
+        }
+    }
+    public void draw(Graphics2D g, int xOffset, int yOffset, int widthOffset, int heightOffset) {
+        if(visible){
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            if(alpha < 1)
+                g.setComposite(alphaComposite);
+            if(image == null) {
+                g.setColor(color);
+                g.fillRect(getX() + xOffset, getY() + yOffset, getWidth() + widthOffset, getHeight() + heightOffset);
+            }else
+                g.drawImage(image, getX() + xOffset, getY() + yOffset, null);
+        }
     }
 
     public void highlight(Graphics g, int x, int y, int thickness, Color color){
         g.setColor(color);
         for(int i = 0; i < thickness; i++)
             g.drawRect(x + i, y + i, getWidth() - i * 2 - 1, getHeight() - i * 2 - 1);
-    }
-
-    public void updateCollisionBox(int newX, int newY) {
-        collisionBox.setLocation(newX, newY);
-    }
-    public void incrementCollisionBox(int xIncrement, int yIncrement) {
-        collisionBox.setLocation(getX() + xIncrement, getY() + yIncrement);
     }
 
     public void setAlpha(float alpha) {
@@ -107,5 +105,14 @@ public class Sprite {
     }
     public int getHeight(){
         return collisionBox.height;
+    }
+    public void setLocation(int x, int y){
+        getCollisionBox().setLocation(x, y);
+    }
+    public void setSize(int width, int height){
+        getCollisionBox().setSize(width, height);
+    }
+    public void setVisible(boolean visible){
+        this.visible = visible;
     }
 }

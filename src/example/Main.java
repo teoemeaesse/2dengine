@@ -32,24 +32,28 @@ public class Main {
                 w.update();
                 w.clearRenderableQueue();
                 tick++;
-                if(tick > 1800)
+                if(tick > 180){
                     UIElement.removeInstances("button2");
+                    ((TextBox) UIElement.getInstances("a").get(0)).setText("qwerty");
+                }
             }
         };
 
-        TextBox tb1 = new TextBox("but", 8, 2),
-                tb2 = new TextBox("ton1");
+        TextBox tb1 = new TextBox("but", "a", true, 2),
+                tb2 = new TextBox("ton1", false, 0);
+        tb1.getSprite().setColor(Color.BLUE);
+        tb1.setBackgroundVisible(true);
+        tb1.setHorizontalPadding(8);
+        tb1.setVerticalPadding(2);
         tb1.setOffset(UIElement.OFFSET_BOTTOM_LEFT);
         tb2.setOffset(UIElement.OFFSET_BOTTOM_RIGHT);
         tb1.setTextColor(Color.YELLOW);
         tb1.setTextColor(Color.GREEN);
 
-        new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), "button1", tb1, tb2) {
+        new Button(new Sprite(new Rectangle(50, 50, 120, 20), Color.RED), "button1", true, tb1, tb2) {
             @Override
             public void init() {
-                Sprite sprite = getSprite();
-                sprite.setAlpha(.5f);
-                setSprite(sprite);
+                getSprite().setAlpha(.5f);
             }
 
             @Override
@@ -65,18 +69,16 @@ public class Main {
             }
         };
         for(int i = 0; i < 10; i++)
-            new Button(new Sprite(new Rectangle(300 + i * 10, 50 + i * 10, 120, 20), Color.BLACK), "button2", new TextBox("button2", "button2txt")){
+            new Button(new Sprite(new Rectangle(300 + i * 10, 50 + i * 10, 120, 20), Color.BLACK), "button2", true, new TextBox("button2", "button2txt", false, 0)){
                 @Override
                 public void init() {
-                    Sprite sprite = getSprite();
-                    sprite.setAlpha(.75f);
-                    setSprite(sprite);
+                    getSprite().setAlpha(.75f);
                 }
 
                 @Override
                 public void onClick() {
-                    System.out.println("rmb pressed");
-                }
+                        System.out.println("rmb pressed");
+                    }
 
                 @Override
                 public void onMouseOver(Graphics g) {

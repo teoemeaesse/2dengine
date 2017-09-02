@@ -21,17 +21,19 @@ public abstract class UIElement implements Renderable {
 
     private static ArrayList<UIElement> instances = new ArrayList<>();
 
-    public UIElement(Sprite sprite, String id) {
+    public UIElement(Sprite sprite, String id, boolean instance){
         this.sprite = sprite;
         this.id = id;
         init();
-        instances.add(this);
+        if(instance)
+            instances.add(this);
     }
-    public UIElement(Sprite sprite){
+    public UIElement(Sprite sprite, boolean instance){
         this.sprite = sprite;
         this.id = "";
         init();
-        instances.add(this);
+        if(instance)
+            instances.add(this);
     }
 
 
@@ -40,7 +42,7 @@ public abstract class UIElement implements Renderable {
             window.queueRenderable(uie, uie.getLayer());
     }
 
-    public final void render(Graphics g){
+    public void render(Graphics g){
         if(sprite != null){
             Graphics2D g2d = (Graphics2D) g;
             sprite.draw(g2d);
@@ -82,7 +84,6 @@ public abstract class UIElement implements Renderable {
     public final String getId() {
         return id;
     }
-
     public static final ArrayList<UIElement> getInstances() {
         return instances;
     }

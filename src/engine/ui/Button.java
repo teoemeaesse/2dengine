@@ -16,12 +16,12 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
     private boolean mouseOver = false, dragging = false;
     private TextBox[] textBoxes;
 
-    public Button(Sprite sprite, String id, TextBox ... textBoxes){
-        super(sprite, id);
+    public Button(Sprite sprite, String id, boolean instance, TextBox ... textBoxes){
+        super(sprite, id, instance);
         this.textBoxes = textBoxes;
     }
-    public Button(Sprite sprite, TextBox ... textBoxes){
-        super(sprite);
+    public Button(Sprite sprite, boolean instance, TextBox ... textBoxes){
+        super(sprite, instance);
         this.textBoxes = textBoxes;
     }
 
@@ -53,42 +53,24 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
     @Override
     public final void additionalRender(Graphics g){
         for(TextBox tb : textBoxes){
-            if(tb.getOffset() == OFFSET_TOP_LEFT){
-                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + tb.getHeight() + 1 + tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_TOP_RIGHT){
-                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - 2 - tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + tb.getHeight() + 1 + tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_BOTTOM_LEFT){
-                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_BOTTOM_RIGHT){
-                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - 2 - tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_MIDDLE){
-                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
-                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
-            }
-            else if(tb.getOffset() == OFFSET_TOP_MIDDLE){
-                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
-                tb.setY(getSprite().getY() + tb.getHeight() + tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_LEFT_MIDDLE){
-                tb.setX(getSprite().getX() + tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
-            }
-            else if(tb.getOffset() == OFFSET_BOTTOM_MIDDLE){
-                tb.setX(getSprite().getX() + getSprite().getWidth() / 2 - tb.getWidth() / 2);
-                tb.setY(getSprite().getY() + getSprite().getHeight() - tb.getVerticalPadding());
-            }
-            else if(tb.getOffset() == OFFSET_RIGHT_MIDDLE){
-                tb.setX(getSprite().getX() + getSprite().getWidth() - tb.getWidth() - tb.getHorizontalPadding());
-                tb.setY(getSprite().getY() + tb.getHeight() + getSprite().getHeight() / 2 - tb.getHeight() / 2);
-            }
+            if(tb.getOffset() == OFFSET_TOP_LEFT)
+                tb.getSprite().setLocation(getSprite().getX() + tb.getHorizontalPadding(), getSprite().getY() + tb.getSprite().getHeight() + 1 + tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_TOP_RIGHT)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() - tb.getSprite().getWidth() - 2 - tb.getHorizontalPadding(), getSprite().getY() + tb.getSprite().getHeight() + 1 + tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_BOTTOM_LEFT)
+                tb.getSprite().setLocation(getSprite().getX() + tb.getHorizontalPadding(), getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_BOTTOM_RIGHT)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() - tb.getSprite().getWidth() - 2 - tb.getHorizontalPadding(), getSprite().getY() + getSprite().getHeight() - 1 - tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_MIDDLE)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() / 2 - tb.getSprite().getWidth() / 2, getSprite().getY() + tb.getSprite().getHeight() + getSprite().getHeight() / 2 - tb.getSprite().getHeight() / 2);
+            else if(tb.getOffset() == OFFSET_TOP_MIDDLE)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() / 2 - tb.getSprite().getWidth() / 2, getSprite().getY() + tb.getSprite().getHeight() + tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_LEFT_MIDDLE)
+                tb.getSprite().setLocation(getSprite().getX() + tb.getHorizontalPadding(), getSprite().getY() + tb.getSprite().getHeight() + getSprite().getHeight() / 2 - tb.getSprite().getHeight() / 2);
+            else if(tb.getOffset() == OFFSET_BOTTOM_MIDDLE)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() / 2 - tb.getSprite().getWidth() / 2, getSprite().getY() + getSprite().getHeight() - tb.getVerticalPadding());
+            else if(tb.getOffset() == OFFSET_RIGHT_MIDDLE)
+                tb.getSprite().setLocation(getSprite().getX() + getSprite().getWidth() - tb.getSprite().getWidth() - tb.getHorizontalPadding(), getSprite().getY() + tb.getSprite().getHeight() + getSprite().getHeight() / 2 - tb.getSprite().getHeight() / 2);
 
             tb.render(g);
         }
@@ -103,19 +85,20 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
     public final void drag(int mouseX, int mouseY){
         if(dragging){
             if(dragOffset == OFFSET_TOP_LEFT)
-                getSprite().updateCollisionBox(mouseX, mouseY);
+                getSprite().setLocation(mouseX, mouseY);
             else if(dragOffset == OFFSET_TOP_RIGHT)
-                getSprite().updateCollisionBox(mouseX - getSprite().getWidth(), mouseY);
+                getSprite().setLocation(mouseX - getSprite().getWidth(), mouseY);
             else if(dragOffset == OFFSET_BOTTOM_LEFT)
-                getSprite().updateCollisionBox(mouseX, mouseY - getSprite().getHeight());
+                getSprite().setLocation(mouseX, mouseY - getSprite().getHeight());
             else if(dragOffset == OFFSET_BOTTOM_RIGHT)
-                getSprite().updateCollisionBox(mouseX - getSprite().getWidth(), mouseY - getSprite().getHeight());
+                getSprite().setLocation(mouseX - getSprite().getWidth(), mouseY - getSprite().getHeight());
             else if(dragOffset == OFFSET_MIDDLE)
-                getSprite().updateCollisionBox(mouseX - getSprite().getWidth() / 2, mouseY - getSprite().getHeight() / 2);
+                getSprite().setLocation(mouseX - getSprite().getWidth() / 2, mouseY - getSprite().getHeight() / 2);
             else if(dragOffset == OFFSET_MOUSE)
-                getSprite().updateCollisionBox(mouseX - mouseHorizontalOffset, mouseY - mouseVerticalOffset);
+                getSprite().setLocation(mouseX - mouseHorizontalOffset, mouseY - mouseVerticalOffset);
         }
     }
+
 
     @Override public final boolean isMouseOver() {
         return mouseOver;

@@ -1,5 +1,7 @@
 package engine.ui;
 
+import engine.gfx.Sprite;
+
 import java.awt.*;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
@@ -14,46 +16,42 @@ public class TextBox extends UIElement {
     private Font font;
     private String text;
     private int offset = OFFSET_MIDDLE,
-            horizontalPadding = 0, verticalPadding = 0,
-            x, y, width, height;
+            horizontalPadding = 0, verticalPadding = 0, backgroundPadding = 0;
 
-    public TextBox(String text, String id){
-        super(null, id);
+    public TextBox(String text, String id, boolean instance, int backgroundPadding){
+        super(null, id, instance);
         this.textColor = Color.BLACK;
         this.font = new Font("Helvetica", Font.PLAIN, 12);
+        this.backgroundPadding = backgroundPadding;
         setText(text);
     }
-    public TextBox(String text, String id, int horizontalPadding, int verticalPadding){
-        super(null, id);
+    public TextBox(String text, boolean instance, int backgroundPadding){
+        super(null, instance);
         this.textColor = Color.BLACK;
         this.font = new Font("Helvetica", Font.PLAIN, 12);
-        this.horizontalPadding = horizontalPadding;
-        this.verticalPadding = verticalPadding;
-        setText(text);
-    }
-    public TextBox(String text){
-        super(null);
-        this.textColor = Color.BLACK;
-        this.font = new Font("Helvetica", Font.PLAIN, 12);
-        setText(text);
-    }
-    public TextBox(String text, int horizontalPadding, int verticalPadding){
-        super(null);
-        this.textColor = Color.BLACK;
-        this.font = new Font("Helvetica", Font.PLAIN, 12);
-        this.horizontalPadding = horizontalPadding;
-        this.verticalPadding = verticalPadding;
+        this.backgroundPadding = backgroundPadding;
         setText(text);
     }
 
     @Override public void init(){
+        setSprite(new Sprite(new Rectangle(0, 0, 0, 0), Color.BLACK));
+        getSprite().setVisible(false);//background is by default off
+    }
+
+    @Override
+    public void render(Graphics g){
+        if(getSprite() != null){
+            Graphics2D g2d = (Graphics2D) g;
+            getSprite().draw(g2d, -backgroundPadding + 1, -backgroundPadding - getSprite().getHeight(), backgroundPadding * 2, backgroundPadding * 2);
+        }
+        additionalRender(g);
     }
 
     @Override
     public void additionalRender(Graphics g) {
         g.setColor(textColor);
         g.setFont(font);
-        g.drawString(text, x, y);
+        g.drawString(text, getSprite().getX(), getSprite().getY());
     }
 
 
@@ -79,31 +77,34 @@ public class TextBox extends UIElement {
     public final void setText(String text) {
         this.text = text;
         Dimension dimensions = getStringDimensions(text, font);
-        width = dimensions.width;
-        height = dimensions.height;
+        getSprite().getCollisionBox().setLocation(
+                (int) getSprite().getCollisionBox().getX(),
+                (int) getSprite().getCollisionBox().getY()
+        );
+        getSprite().getCollisionBox().setSize(
+                (int) dimensions.getWidth(),
+                (int) dimensions.getHeight()
+        );
     }
-    public void setX(int x) {
-        this.x = x;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
-    public int getWidth() {
-        return width;
-    }
-    public int getHeight() {
-        return height;
-    }
-    public void setOffset(int offset) {
+    public final void setOffset(int offset) {
         this.offset = offset;
     }
-    public int getOffset() {
+    public final int getOffset() {
         return offset;
     }
-    public int getHorizontalPadding() {
+    public final int getHorizontalPadding() {
         return horizontalPadding;
     }
-    public int getVerticalPadding() {
+    public final int getVerticalPadding() {
         return verticalPadding;
+    }
+    public void setHorizontalPadding(int horizontalPadding) {
+        this.horizontalPadding = horizontalPadding;
+    }
+    public void setVerticalPadding(int verticalPadding) {
+        this.verticalPadding = verticalPadding;
+    }
+    public final void setBackgroundVisible(boolean backgroundVisible){
+        getSprite().setVisible(backgroundVisible);
     }
 }
