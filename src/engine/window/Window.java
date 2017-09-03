@@ -32,9 +32,9 @@ public abstract class Window extends JFrame {
 
     public final void clearRenderableQueue(){
         UIElement.queueUIElements(this);
-        repaint();
     }
     public abstract void update();
+    public abstract void render(Graphics g);
 
     public final void mouseUpdate(){
         checkMouseDragging();
@@ -96,6 +96,7 @@ public abstract class Window extends JFrame {
                 l.render(g);
                 l.clearQueue();
             }
+            render(g);
         }
 
         private void cls(Graphics g){

@@ -15,9 +15,20 @@ import java.awt.Font;
 public class Main {
     public static void main(String[] args){
         Window w = new Window("frame", 600, 400){
+            int tick = 0;
+
             @Override
             public void update() {
                 mouseUpdate();
+            }
+            @Override
+            public void render(Graphics g){
+                clearRenderableQueue();
+                tick++;
+                if(tick > 180){
+                    UIElement.removeInstances("button2");
+                    ((TextBox) UIElement.getInstances("a").get(0)).setText("qwerty");
+                }
             }
         };
         w.setAntialiasing(true);
@@ -25,17 +36,10 @@ public class Main {
         w.center();
 
         Timer t = new Timer(60) {
-            int tick = 0;
-
             @Override
             public void action() {
                 w.update();
-                w.clearRenderableQueue();
-                tick++;
-                if(tick > 180){
-                    UIElement.removeInstances("button2");
-                    ((TextBox) UIElement.getInstances("a").get(0)).setText("qwerty");
-                }
+                w.repaint();
             }
         };
 
