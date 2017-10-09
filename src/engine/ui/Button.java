@@ -99,6 +99,10 @@ public abstract class Button extends UIElement implements Clickable, Highlightab
         }
     }
 
+    public final void highlight(Graphics g, Color color, int thickness){
+        if(isMouseOver())
+            getSprite().highlight(g, getSprite().getX(), getSprite().getY(), thickness, color);
+    }
 
     @Override public final boolean isMouseOver() {
         return mouseOver;

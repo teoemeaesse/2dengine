@@ -87,6 +87,13 @@ public abstract class Window extends JFrame {
         layers.get(layer).addToQueue(renderable);
     }
 
+    public final int getDisplayWidth(){
+        return display.getWidth();
+    }
+    public final int getDisplayHeight(){
+        return display.getHeight();
+    }
+
     private class Display extends JPanel{
         @Override
         public void paintComponent(Graphics g){

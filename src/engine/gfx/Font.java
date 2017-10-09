@@ -19,4 +19,7 @@ public class Font {
 
         return font;
     }
+    public static java.awt.Font getResizedFont(java.awt.Font font, float size){
+        return font.deriveFont(size);
+    }
 }

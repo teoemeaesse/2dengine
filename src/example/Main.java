@@ -7,7 +7,6 @@ import engine.ui.Button;
 import engine.window.Window;
 
 import java.awt.*;
-import java.awt.Font;
 
 /**
  * Created by tomas on 5/8/2017.
@@ -67,9 +66,8 @@ public class Main {
 
             @Override
             public void onMouseOver(Graphics g) {
-                if(isMouseOver()){
-                    getSprite().highlight(g, getSprite().getX(), getSprite().getY(), 5, Color.BLUE);
-                }
+                highlight(g, Color.BLUE, 5);
+
             }
         };
         for(int i = 0; i < 10; i++)
@@ -86,9 +84,7 @@ public class Main {
 
                 @Override
                 public void onMouseOver(Graphics g) {
-                    if(isMouseOver()){
-                        getSprite().highlight(g, getSprite().getX(), getSprite().getY(), 3, Color.BLUE);
-                    }
+                    highlight(g, Color.BLUE, 3);
                 }
             };
 
